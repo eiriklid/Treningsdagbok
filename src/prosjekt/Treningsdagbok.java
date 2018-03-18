@@ -1,6 +1,7 @@
 package prosjekt;
 
 import java.sql.*;
+import java.util.Locale;
 //import java.io.PrintStream;
 import java.util.Scanner;
 import java.time.format.*;
@@ -11,6 +12,8 @@ public class Treningsdagbok {
 	
 
 	public static void main(String[] args) {
+
+		Locale.setDefault(Locale.US); //For å få . og ikke , i double stirng format.
 		
 		try{
 			Connection myconn = DriverManager.getConnection("jdbc:mysql://localhost:3306/db","root","database");
@@ -21,10 +24,10 @@ public class Treningsdagbok {
 				Scanner scanner = new Scanner(System.in);
 				String mainText = "Velg kategori ved å taste inn tallet i parantes: \n" +
 		                "(1) Registrer ny treningsøkt \n" +
-		                //"(2) Legg til nye øvelser \n" +
+		                "(2) Legg til øvelse(r) \n" +
 		                "(3) Legg til notat til økt \n" +
-		                //"(2) Registrer mål for øvelser \n" +
 		                "(4) Lag ny øvelsesgruppe \n" //+
+		                //"(5) Registrer mål for øvelser \n" +
 		                //"(6) Legg til resultatlogg \n" +
 		                //"(7) Treningsrapport \n" +
 		                //"(8) Avslutt";
@@ -41,6 +44,7 @@ public class Treningsdagbok {
 					break;
 					
 				case 2: //Legg til Øvelse
+					Øvelse øvelse = new Øvelse(myconn, scanner);
 					break;
 					
 				case 3: // legg til notat

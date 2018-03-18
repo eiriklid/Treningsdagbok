@@ -14,7 +14,7 @@ public class Økt {
 	private int øktID;
 	
 	
-	private Date dato; 
+	private Date dato; //TODO: implementer sett dato & tid
 	
 	private int varighet;
 	
@@ -29,7 +29,7 @@ public class Økt {
 		return øktID;
 	}
 	
-	public void nyØkt(Scanner scanner){ //todo Fix dato tidspunkt
+	public void nyØkt(Scanner scanner){
 		System.out.println("legger til ny økt");
 		dato = new Date(); 
 		System.out.println("angi treningssenter");

@@ -1,7 +1,6 @@
 package prosjekt;
 
 import java.sql.*;
-import java.util.Date;
 import java.util.Scanner;
 
 public class Øvelsesgruppe {

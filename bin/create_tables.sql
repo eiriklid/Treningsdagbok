@@ -22,16 +22,16 @@ create table ØktNotat(
     
 create table Øvelse(
 	Øvelsesnavn char(40) not null primary key,
-	SubClass CHAR(1) NOT NULL,
-    CONSTRAINT UQ_Øvelse UNIQUE (Øvelsesnavn, SubClass)
+	SubClass CHAR(1) NOT NULL
+    #CONSTRAINT UQ_Øvelse UNIQUE (Øvelsesnavn, SubClass)
     );
 
 create table Friøvelse(
 	Øvelsesnavn char(40) not null primary key,
 	SubClass CHAR(1) NOT NULL,
     Beskrivelse text(1023),
-    CONSTRAINT CHK_Fri CHECK (SubClass = 'F'),
-    CONSTRAINT FK_Øvelse_Friøvelse FOREIGN KEY (Øvelsesnavn, Subclass) REFERENCES Øvelse(Øvelsesnavn, Subclass)
+    CONSTRAINT CHK_Fri CHECK (SubClass = 'F')
+    #CONSTRAINT FK_Øvelse_Friøvelse FOREIGN KEY (Øvelsesnavn, Subclass) REFERENCES Øvelse(Øvelsesnavn, Subclass)
     );
     
 create table Apparatøvelse(
@@ -39,8 +39,8 @@ create table Apparatøvelse(
 	SubClass CHAR(1) NOT NULL,
     Kilo double,
     Sett int,
-    CONSTRAINT CHK_App CHECK (SubClass = 'A'),
-    CONSTRAINT FK_Øvelse_Apparatøvelse FOREIGN KEY (Øvelsesnavn, Subclass) REFERENCES Øvelse(Øvelsesnavn, Subclass)
+    CONSTRAINT CHK_App CHECK (SubClass = 'A')
+    #CONSTRAINT FK_Øvelse_Apparatøvelse FOREIGN KEY (Øvelsesnavn, Subclass) REFERENCES Øvelse(Øvelsesnavn, Subclass)
     );
 
 
