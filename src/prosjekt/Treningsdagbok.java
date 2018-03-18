@@ -1,21 +1,12 @@
 package prosjekt;
 
 import java.sql.*;
-import java.io.PrintStream;
+//import java.io.PrintStream;
 import java.util.Scanner;
 import java.time.format.*;
 
 public class Treningsdagbok {
-	private enum Choice{
-		NEW_Session("new session"),
-		Exit("End program");
-		
-		private String text;
-		
-		Choice(String text){
-			this.text=text;
-		}
-	}
+
 	private static Økt currentøkt;
 	
 
@@ -28,7 +19,17 @@ public class Treningsdagbok {
 			while(true){
 				//main loop runs here
 				Scanner scanner = new Scanner(System.in);
-				System.out.println("Angi valg 1-inf");
+				String mainText = "Velg kategori ved å taste inn tallet i parantes: \n" +
+		                "(1) Registrer ny treningsøkt \n" +
+		                //"(2) Legg til nye øvelser \n" +
+		                "(3) Legg til notat til økt \n" +
+		                //"(2) Registrer mål for øvelser \n" +
+		                "(4) Lag ny øvelsesgruppe \n" //+
+		                //"(6) Legg til resultatlogg \n" +
+		                //"(7) Treningsrapport \n" +
+		                //"(8) Avslutt";
+		                ;
+				System.out.println(mainText);
 				int choicevar = scanner.nextInt();
 				
 				switch (choicevar){
@@ -39,7 +40,7 @@ public class Treningsdagbok {
 					currentøkt = økt;
 					break;
 					
-				case 2: //start ned Øvelse
+				case 2: //Legg til Øvelse
 					break;
 					
 				case 3: // legg til notat
@@ -47,9 +48,14 @@ public class Treningsdagbok {
 					Notat notat = new Notat(myconn);
 					notat.nyttNotat(scanner,currentøkt);
 					break;
+				
+				case 4:
+					new Øvelsesgruppe(myconn,scanner);
+					break;
 					
 				
 				default:
+					System.out.println("Ukjent nummer");
 					break;
 				}
 			}
