@@ -10,7 +10,7 @@ public class Øvelse {
 	String subclass;
 	Scanner scanner;
 	
-	public Øvelse(Connection myconn,Scanner scanner){//TODO: Legge inn i øvelsesgruppe
+	public Øvelse(Connection myconn,Scanner scanner){//TODO: sjekke om den finnes først
 		this.myconn = myconn;
 		this.scanner = scanner;
 		
@@ -61,6 +61,7 @@ public class Øvelse {
 					statement.executeUpdate(øvelseInsert);
 					statement.executeUpdate(subclassInsert);
 					System.out.println(String.format("Apparatøvelse '%s' lagt til!\n",øvelsesnavn));
+					leggTilApparat();
 					break;
 				}catch(Exception e){
 					e.printStackTrace();
@@ -92,6 +93,21 @@ public class Øvelse {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public void leggTilApparat() {
+		System.out.println("Skriv navn på apparatet til øvelsen:");
+		String apparatnavn = scanner.next();
+		Apparat apparat = new Apparat(myconn, scanner, apparatnavn);
+		String apparatInsert = String.format("insert into ApparatTilØvelse values( '%s', '%s');",øvelsesnavn, apparat.apparatnavn);
+		try{
+			Statement statement = myconn.createStatement();
+			statement.executeUpdate(apparatInsert);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 
 }
