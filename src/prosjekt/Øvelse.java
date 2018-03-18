@@ -8,13 +8,16 @@ public class Øvelse {
 	Connection myconn;
 	String øvelsesnavn;
 	String subclass;
+	Scanner scanner;
 	
-	public Øvelse(Connection myconn,Scanner scanner){
+	public Øvelse(Connection myconn,Scanner scanner){//TODO: Legge inn i øvelsesgruppe
 		this.myconn = myconn;
+		this.scanner = scanner;
 		
 		System.out.println("Lager ny Øvelse");
 		System.out.println("Skriv navn på øvelse:");
-		øvelsesnavn = scanner.next();
+		scanner.nextLine();
+		øvelsesnavn = scanner.nextLine(); //TODO: debug denne
 		
 		while(true) {
 			System.out.println("Velg type øvelse; Friøvelse eller Apparatøvelse:");
@@ -40,7 +43,7 @@ public class Øvelse {
 				}
 			
 			}
-			else if (valg.equals("A")) { //TODO: Legg inn fler alternativ
+			else if (valg.equals("A") || valg.startsWith("App")) { //TODO: Legg inn fler alternativ
 				String øvelseInsert = String.format("insert into øvelse values('%s','%s');",øvelsesnavn,"A");
 				
 				System.out.println("Angi kilo:");
@@ -62,14 +65,33 @@ public class Øvelse {
 				}catch(Exception e){
 					e.printStackTrace();
 				}
-			}	
-		
-		System.out.println("");
-		
-		
+			}
+			else {
+				System.out.println("!!! Feil skrevet...  !!!");
+			}
 			
+		System.out.println("");
+					
 		}
 		
+		leggTilGruppe();
+		
+		
+		
+		
+	}
+	
+	public void leggTilGruppe() {
+		System.out.println("Skriv navn på gruppen øvelsen tilhører:");
+		String muskelgruppe = scanner.next();
+		Øvelsesgruppe øvelsesgruppe = new Øvelsesgruppe(myconn, muskelgruppe);
+		String øvelseInsert = String.format("insert into ØvelseIGruppe values('%s','%s');", øvelsesnavn, øvelsesgruppe.muskelgruppe);
+		try{
+			Statement statement = myconn.createStatement();
+			statement.executeUpdate(øvelseInsert);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }

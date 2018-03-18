@@ -21,7 +21,7 @@ public class Notat {
 		String eksistererNotat = String.format("select * from øktnotat where øktid = %d;", økt.getØktID());
 		
 		ResultSet myRs = statement.executeQuery(eksistererNotat);
-		if (myRs.next() == true){
+		if (myRs.next()){
 			System.out.println("Det er allerede laget notat for denne økten");
 		}else{
 		
