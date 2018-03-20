@@ -10,6 +10,7 @@ public class Økt {
 	
 	
 	private Connection myconn;
+	private boolean current ;
 	
 	private int øktID;
 	
@@ -28,11 +29,16 @@ public class Økt {
 	public int getØktID(){
 		return øktID;
 	}
+	public Date getØktnow(){
+		return dato;
+	}
+	
+	
 	
 	public void nyØkt(Scanner scanner){
-		System.out.println("legger til ny økt");
+		System.out.println("legger til ny økt..");
 		dato = new Date(); 
-		System.out.println("angi treningssenter");
+		System.out.println("angi treningssenter: \n");
 		treningssenter = scanner.next();
 		
 		System.out.println("angi varighet i minutter");

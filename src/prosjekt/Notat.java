@@ -37,12 +37,12 @@ public class Notat {
 				notatID = Integer.parseInt(myRs.getString(1));
 			}
 			
-			System.out.println(notatID);
+			//System.out.println(notatID);
 			
 			String øktNotatInsert = String.format("insert into ØktNotat(øktid,notatid) values('%d', '%d');",økt.getØktID(),notatID);
 			
 			statement.executeUpdate(øktNotatInsert);
-			System.out.println(øktNotatInsert);
+			//System.out.println(øktNotatInsert);
 			//todo legg inn øvelser
 			
 			}
