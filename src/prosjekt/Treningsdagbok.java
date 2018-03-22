@@ -23,7 +23,7 @@ public class Treningsdagbok {
 								"**************************************\n";
 			System.out.println(introText);
 			while(true){
-				//main loop runs here
+				//Kjører hovedmenyen.TODO: Bør legge inn en break for å avslutte program fra menyen
 				Scanner scanner = new Scanner(System.in);
 				if (currentøkt==null){
 					System.out.println("Ingen økt er valgt \n ");

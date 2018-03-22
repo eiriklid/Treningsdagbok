@@ -9,7 +9,22 @@ public class Øvelsesgruppe {
 	
 	public Øvelsesgruppe(Connection myconn,Scanner scanner){
 		this.myconn = myconn;
-		System.out.println("Skriv navn på gruppe:");
+		String allegrupper = String.format("select * from Øvelsesgruppe ;");
+		try{
+		Statement listgrupper = myconn.createStatement();
+		ResultSet myRs = listgrupper.executeQuery(allegrupper);
+		System.out.println("Muskelgrupper registrert i databasen:\n");
+		while (myRs.next()){
+			String first = myRs.getString("muskelgruppe");
+			System.out.println(first);
+			System.out.println("\n");
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		System.out.println("Skriv navn på muskelgruppe:");
 		muskelgruppe = scanner.next();
 		
 		String gruppeInsert = String.format("insert into Øvelsesgruppe values('%s');",muskelgruppe);
@@ -30,6 +45,8 @@ public class Øvelsesgruppe {
 		this.muskelgruppe = muskelgruppe;
 		try{
 		Statement statement = myconn.createStatement();
+		
+		System.out.println("*************************\n");
 		String eksisterer = String.format("select * from Øvelsesgruppe where muskelgruppe = '%s';", muskelgruppe);
 		
 		ResultSet myRs = statement.executeQuery(eksisterer);

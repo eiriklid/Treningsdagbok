@@ -20,7 +20,7 @@ public class Øvelse {
 		øvelsesnavn = scanner.nextLine(); //TODO: debug denne
 		
 		while(true) {
-			System.out.println("Velg type øvelse; Friøvelse eller Apparatøvelse:");
+			System.out.println("Velg type øvelse; Friøvelse(F) eller Apparatøvelse(A):");
 			String valg = scanner.next();
 			
 			if( valg.equals("F")|| valg.equals("Fri")|| valg.equals("f")|| valg.equals("Friøvelse") ) {
