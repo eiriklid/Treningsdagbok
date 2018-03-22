@@ -54,7 +54,7 @@ public class Treningsdagbok {
 					break;
 					
 				case 2: //Legg til Øvelse
-					Øvelse øvelse = new Øvelse(myconn, scanner);
+					Øvelse øvelse = new Øvelse(myconn, scanner,currentøkt);
 					break;
 					
 				case 3: // legg til notat

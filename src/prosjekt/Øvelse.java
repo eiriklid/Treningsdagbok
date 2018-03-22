@@ -10,75 +10,103 @@ public class Øvelse {
 	String subclass;
 	Scanner scanner;
 	
-	public Øvelse(Connection myconn,Scanner scanner){//TODO: sjekke om den finnes først
+	public Øvelse(Connection myconn,Scanner scanner, Økt currentøkt){//TODO: sjekke om den finnes først
 		this.myconn = myconn;
 		this.scanner = scanner;
 		
-		System.out.println("Lager ny Øvelse");
+		System.out.println("Legger til ny Øvelse");
 		System.out.println("Skriv navn på øvelse:");
 		scanner.nextLine();
 		øvelsesnavn = scanner.nextLine(); //TODO: debug denne
-		
-		while(true) {
-			System.out.println("Velg type øvelse; Friøvelse(F) eller Apparatøvelse(A):");
-			String valg = scanner.next();
-			
-			if( valg.equals("F")|| valg.equals("Fri")|| valg.equals("f")|| valg.equals("Friøvelse") ) {
-				String øvelseInsert = String.format("insert into øvelse values('%s','%s');",øvelsesnavn,"F");
+		try{
+			String eksisterer = String.format("select * from øvelse where øvelsesnavn= '%s';", øvelsesnavn);
+			Statement statement = myconn.createStatement();
+			ResultSet myRs = statement.executeQuery(eksisterer);
+			if (myRs.next()){
+				System.out.println("Debug Øvelse finnes allerede");
+			}else {while(true) {
+				System.out.println("Velg type øvelse; Friøvelse(F) eller Apparatøvelse(A):");
+				String valg = scanner.next();
 				
-				System.out.println("Angi beskrivelse for denne øvelsen:");
-				scanner.nextLine();
-				String beskrivelse = scanner.nextLine();
-
-				String subclassInsert = String.format("insert into Friøvelse values('%s','%s','%s');",øvelsesnavn,"F", beskrivelse);
-				
-				try{
-					Statement statement = myconn.createStatement();
-					statement.executeUpdate(øvelseInsert);
-					statement.executeUpdate(subclassInsert);
-					System.out.println(String.format("Friøvelse '%s' lagt til!",øvelsesnavn));
-					break;
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-			
-			}
-			else if (valg.equals("A") || valg.startsWith("App")) { //TODO: Legg inn fler alternativ
-				String øvelseInsert = String.format("insert into øvelse values('%s','%s');",øvelsesnavn,"A");
-				
-				System.out.println("Angi kilo:");
-				scanner.nextLine();
-				Double kilo = scanner.nextDouble();
-
-				System.out.println("Angi sett:");
-				scanner.nextLine();
-				Integer sett= scanner.nextInt();
-				
-				String subclassInsert = String.format("insert into Apparatøvelse values('%s','%s',%.2f, %d);",øvelsesnavn,"A", kilo, sett);
-				System.out.println("Debug: " + subclassInsert);
-				try{
-					Statement statement = myconn.createStatement();
-					statement.executeUpdate(øvelseInsert);
-					statement.executeUpdate(subclassInsert);
-					System.out.println(String.format("Apparatøvelse '%s' lagt til!\n",øvelsesnavn));
-					leggTilApparat();
-					break;
-				}catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-			else {
-				System.out.println("!!! Feil skrevet...  !!!");
-			}
-			
-		System.out.println("");
+				if( valg.equals("F")|| valg.equals("Fri")|| valg.equals("f")|| valg.equals("Friøvelse") ) {
+					String øvelseInsert = String.format("insert into øvelse values('%s','%s');",øvelsesnavn,"F");
 					
+					System.out.println("Angi beskrivelse for denne øvelsen:");
+					scanner.nextLine();
+					String beskrivelse = scanner.nextLine();
+
+					String subclassInsert = String.format("insert into Friøvelse values('%s','%s','%s');",øvelsesnavn,"F", beskrivelse);
+					
+					try{
+						 statement = myconn.createStatement();
+						statement.executeUpdate(øvelseInsert);
+						statement.executeUpdate(subclassInsert);
+						System.out.println(String.format("Friøvelse '%s' lagt til!",øvelsesnavn));
+						break;
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				
+				}
+				else if (valg.equals("A") || valg.startsWith("App")) { //TODO: Legg inn fler alternativ
+					String øvelseInsert = String.format("insert into øvelse values('%s','%s');",øvelsesnavn,"A");
+					
+					System.out.println("Angi kilo:");
+					scanner.nextLine();
+					Double kilo = scanner.nextDouble();
+
+					System.out.println("Angi sett:");
+					scanner.nextLine();
+					Integer sett= scanner.nextInt();
+					
+					String subclassInsert = String.format("insert into Apparatøvelse values('%s','%s',%.2f, %d);",øvelsesnavn,"A", kilo, sett);
+					System.out.println("Debug: " + subclassInsert);
+					try{
+						 statement = myconn.createStatement();
+						statement.executeUpdate(øvelseInsert);
+						statement.executeUpdate(subclassInsert);
+						System.out.println(String.format("Apparatøvelse '%s' lagt til!\n",øvelsesnavn));
+						leggTilApparat();
+						break;
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				else {
+					System.out.println("!!! Feil skrevet...  !!!");
+				}
+				
+			System.out.println("");
+						
+			}
+			leggTilGruppe();
+				
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
-		leggTilGruppe();
 		
 		
 		
+		leggTilØvelseiØkt(currentøkt);
+		
+		
+		
+		
+	}
+	public void leggTilØvelseiØkt(Økt currentøkt){
+		System.out.println("Angi prestasjon for øvelsen, skala 1-10:");
+		//scanner.nextLine(); //TODO debug dette
+		int prestasjon = scanner.nextInt();
+		
+		String øvelseInsert = String.format("insert into ØvelseIøkt values('%d','%s','%d');", currentøkt.getØktID(), øvelsesnavn,prestasjon);
+		try{
+			Statement statement = myconn.createStatement();
+			statement.executeUpdate(øvelseInsert);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 	}
 	
