@@ -36,8 +36,8 @@ public class Treningsdagbok {
 		                "(1) Registrer ny treningsøkt \n" +
 		                "(2) Legg til øvelse(r) \n" +
 		                "(3) Legg til notat til økt \n" +
-		                "(4) Lag ny øvelsesgruppe \n" //+
-		                //"(5) Registrer mål for øvelser \n" +
+		                "(4) Lag ny øvelsesgruppe \n" +
+		                "(5) Hent ut N siste økter \n"// +
 		                //"(6) Legg til resultatlogg \n" +
 		                //"(7) Treningsrapport \n" +
 		                //"(8) Avslutt";
@@ -54,17 +54,31 @@ public class Treningsdagbok {
 					break;
 					
 				case 2: //Legg til Øvelse
-					Øvelse øvelse = new Øvelse(myconn, scanner,currentøkt);
+					if (currentøkt==null){
+						System.out.println("Ingen økt er valgt \n ");
+					}else {
+						Øvelse øvelse = new Øvelse(myconn, scanner,currentøkt);
+					}
+					
 					break;
 					
 				case 3: // legg til notat
-					
-					Notat notat = new Notat(myconn);
-					notat.nyttNotat(scanner,currentøkt);
+					if (currentøkt==null){
+						System.out.println("Ingen økt er valgt \n ");
+					}else {
+						Notat notat = new Notat(myconn);
+						notat.nyttNotat(scanner,currentøkt);
+						}
 					break;
 				
 				case 4:
 					new Øvelsesgruppe(myconn,scanner);
+					break;
+					
+				case 5:
+					System.out.println("Angi hvor mange økter du vil se: \n ");
+					int n = scanner.nextInt();
+					getNlastØkts(n,myconn);
 					break;
 					
 				
@@ -85,7 +99,52 @@ public class Treningsdagbok {
 
 	}
 	
+	public static void getØvelsesResultat(Connection myconn, ){
+		// list opp øvelser registrert i db
+		// be brukeren velge hvilken han vil se logg for
+		//select something
+		
+	}
 	
+	public static void getNlastØkts(int n, Connection myconn){
+		int maxID ;
+		String størsteid =("select max(øktid) from økt;");
+		try{
+			Statement statement = myconn.createStatement();
+			ResultSet myRs = statement.executeQuery(størsteid);
+			if (myRs.next()){
+				maxID = (myRs.getInt("max(øktid)"));
+			}else{
+				System.out.println("Ingen tidligere økter i databasen");
+				return;
+
+			}
+		
+		
+			String allegrupper = String.format("select * from økt left join Øktnotat on økt.øktid=øktnotat.øktid  left join notat on notat.notatid=øktnotat.notatid  where økt.øktid> '%d' ;",maxID-n);
+		
+			Statement listøkter = myconn.createStatement();
+			 myRs = listøkter.executeQuery(allegrupper);
+			
+			while (myRs.next()){
+				String notatt;
+				if (myRs.getString("tekstfelt") == null){
+					notatt = "";
+				}else{
+					notatt=myRs.getString("tekstfelt");
+				}
+				String first = "Økt ID: "+ myRs.getString("øktid")+ "   "+ "Notat: "+ notatt;
+				System.out.println(first);
+				//System.out.println("\n");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		
+		
+	}
 	
 
 }

@@ -124,6 +124,20 @@ public class Øvelse {
 	}
 	
 	public void leggTilApparat() {
+		String allegrupper = String.format("select * from Apparat ;");
+		try{
+			Statement listgrupper = myconn.createStatement();
+			ResultSet myRs = listgrupper.executeQuery(allegrupper);
+			System.out.println("Apparater registrert i databasen:\n");
+			while (myRs.next()){
+				String first = myRs.getString("apparatnavn");
+				System.out.println(first);
+				System.out.println("\n");
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			
+		}
 		System.out.println("Skriv navn på apparatet til øvelsen:");
 		String apparatnavn = scanner.next();
 		Apparat apparat = new Apparat(myconn, scanner, apparatnavn);
